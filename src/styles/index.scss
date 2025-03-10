@@ -1,6 +1,4 @@
-body {
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  
+@import "./App.scss";
+@import "./Pet.scss";
+@import "./StatusBar.scss";
+@import "./Controls.scss";

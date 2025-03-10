@@ -6,7 +6,10 @@ const StatusBar = ({ label, value }) => {
     <div className="status-bar">
       <span>{label}</span>
       <div className="bar">
-        <div className="fill" style={{ width: `${value}%` }}></div>
+        <div
+          className="fill"
+          style={{ width: `${value}%` }}
+        ></div>
       </div>
     </div>
   );

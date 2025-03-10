@@ -1,50 +1,84 @@
 import React, { useState, useEffect } from "react";
+import PetName from "./components/PetName";
 import Pet from "./components/Pet";
 import StatusBar from "./components/StatusBar";
 import Controls from "./components/Controls";
 import "./styles/App.scss";
 
-function App() {
-  const [petName] = useState("Тама");
-  const [status, setStatus] = useState({
-    food: 100,
-    clean: 100,
-    fun: 100,
-    sleep: 100,
+const App = () => {
+  // Инициализация состояний питомца из localStorage или дефолтных значений
+  const defaultStats = {
+    hunger: 100,
+    cleanliness: 100,
+    energy: 100,
+    mood: 100,
+  };
+
+  const [hunger, setHunger] = useState(() => {
+    const savedHunger = localStorage.getItem("hunger");
+    return savedHunger ? JSON.parse(savedHunger) : defaultStats.hunger;
   });
 
-  // Функции взаимодействия
-  const feedPet = () => setStatus((prev) => ({ ...prev, food: Math.min(100, prev.food + 10) }));
-  const washPet = () => setStatus((prev) => ({ ...prev, clean: Math.min(100, prev.clean + 10) }));
-  const playWithPet = () => setStatus((prev) => ({ ...prev, fun: Math.min(100, prev.fun + 10) }));
-  const sleepPet = () => setStatus((prev) => ({ ...prev, sleep: Math.min(100, prev.sleep + 10) }));
+  const [cleanliness, setCleanliness] = useState(() => {
+    const savedCleanliness = localStorage.getItem("cleanliness");
+    return savedCleanliness ? JSON.parse(savedCleanliness) : defaultStats.cleanliness;
+  });
 
-  // Таймер для уменьшения статусов
+  const [energy, setEnergy] = useState(() => {
+    const savedEnergy = localStorage.getItem("energy");
+    return savedEnergy ? JSON.parse(savedEnergy) : defaultStats.energy;
+  });
+
+  const [mood, setMood] = useState(() => {
+    const savedMood = localStorage.getItem("mood");
+    return savedMood ? JSON.parse(savedMood) : defaultStats.mood;
+  });
+
+  // Сохранение данных в localStorage при изменении статусов
+  useEffect(() => {
+    localStorage.setItem("hunger", JSON.stringify(hunger));
+    localStorage.setItem("cleanliness", JSON.stringify(cleanliness));
+    localStorage.setItem("energy", JSON.stringify(energy));
+    localStorage.setItem("mood", JSON.stringify(mood));
+  }, [hunger, cleanliness, energy, mood]);
+
+  // Таймер для обновления статусов питомца
   useEffect(() => {
     const interval = setInterval(() => {
-      setStatus((prev) => ({
-        food: Math.max(0, prev.food - 3),
-        clean: Math.max(0, prev.clean - 2),
-        fun: Math.max(0, prev.fun - 2),
-        sleep: Math.max(0, prev.sleep - 1),
-      }));
-    }, 5000); // Обновляется каждые 5 секунд
+      setHunger((prev) => Math.max(prev - 5, 0));
+      setCleanliness((prev) => Math.max(prev - 3, 0));
+      setEnergy((prev) => Math.max(prev - 4, 0));
+      setMood((prev) => Math.max(prev - 3, 0));
+    }, 5000); // Каждый 5 секунд
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="app">
-      <Pet name={petName} />
-      <div className="status-bars">
-        <StatusBar label="Питание" value={status.food} />
-        <StatusBar label="Чистота" value={status.clean} />
-        <StatusBar label="Веселье" value={status.fun} />
-        <StatusBar label="Сон" value={status.sleep} />
+    <div className="app-container">
+      {/* Компонент для редактирования имени питомца */}
+      <PetName />
+
+      {/* Статус-бары */}
+      <div className="status-container">
+        <StatusBar label="Голод" value={hunger} />
+        <StatusBar label="Чистота" value={cleanliness} />
+        <StatusBar label="Энергия" value={energy} />
+        <StatusBar label="Настроение" value={mood} />
       </div>
-      <Controls onFeed={feedPet} onWash={washPet} onPlay={playWithPet} onSleep={sleepPet} />
+
+      {/* Компонент с картинкой питомца */}
+      <Pet />
+
+      {/* Компоненты для управления питомцем */}
+      <Controls
+        setHunger={setHunger}
+        setCleanliness={setCleanliness}
+        setEnergy={setEnergy}
+        setMood={setMood}
+      />
     </div>
   );
-}
+};
 
 export default App;

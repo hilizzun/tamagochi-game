@@ -1,11 +1,11 @@
 import React from "react";
 import "../styles/Pet.scss";
+import catImage from "../assets/cat.png"; // добавь в папку `assets/` своё изображение
 
-const Pet = ({ name }) => {
+const Pet = () => {
   return (
     <div className="pet-container">
-      <h2 className="pet-name">{name}</h2>
-      <div className="pet">🐶</div>
+      <img src={catImage} alt="Питомец" className="pet-image" />
     </div>
   );
 };

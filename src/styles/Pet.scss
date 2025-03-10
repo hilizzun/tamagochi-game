@@ -1,14 +1,11 @@
 .pet-container {
-    text-align: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+
+  .pet-image {
+    width: 200px;
+    height: auto;
   }
-  
-  .pet-name {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .pet {
-    font-size: 80px;
-  }
-  
+}

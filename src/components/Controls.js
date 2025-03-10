@@ -1,13 +1,21 @@
 import React from "react";
 import "../styles/Controls.scss";
 
-const Controls = ({ onFeed, onWash, onPlay, onSleep }) => {
+const Controls = ({ setHunger, setCleanliness, setEnergy, setMood }) => {
   return (
     <div className="controls">
-      <button onClick={onFeed}>🍖 Кормить</button>
-      <button onClick={onWash}>🛁 Мыть</button>
-      <button onClick={onPlay}>🎾 Играть</button>
-      <button onClick={onSleep}>😴 Спать</button>
+      <button onClick={() => setHunger((prev) => Math.min(prev + 20, 100))}>
+        Покормить
+      </button>
+      <button onClick={() => setCleanliness((prev) => Math.min(prev + 20, 100))}>
+        Помыть
+      </button>
+      <button onClick={() => setEnergy((prev) => Math.min(prev + 20, 100))}>
+        Уложить спать
+      </button>
+      <button onClick={() => setMood((prev) => Math.min(prev + 20, 100))}>
+        Поиграть
+      </button>
     </div>
   );
 };

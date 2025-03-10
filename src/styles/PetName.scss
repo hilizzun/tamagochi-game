@@ -1,0 +1,31 @@
+.pet-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  
+    input {
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+      outline: none;
+      text-align: center;
+      border-bottom: 2px solid #4caf50;
+      padding: 5px;
+    }
+  
+    .edit-icon {
+      cursor: pointer;
+      color: #4caf50;
+      transition: color 0.2s ease;
+  
+      &:hover {
+        color: #388e3c;
+      }
+    }
+  }
+  
