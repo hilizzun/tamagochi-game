@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from "react";
 import PetName from "./components/PetName";
 import Pet from "./components/Pet";
@@ -6,7 +7,6 @@ import Controls from "./components/Controls";
 import "./styles/App.scss";
 
 const App = () => {
-  // Инициализация состояний питомца из localStorage или дефолтных значений
   const defaultStats = {
     hunger: 100,
     cleanliness: 100,
@@ -14,69 +14,44 @@ const App = () => {
     mood: 100,
   };
 
-  const [hunger, setHunger] = useState(() => {
-    const savedHunger = localStorage.getItem("hunger");
-    return savedHunger ? JSON.parse(savedHunger) : defaultStats.hunger;
-  });
+  const [hunger, setHunger] = useState(() => JSON.parse(localStorage.getItem("hunger")) || defaultStats.hunger);
+  const [cleanliness, setCleanliness] = useState(() => JSON.parse(localStorage.getItem("cleanliness")) || defaultStats.cleanliness);
+  const [energy, setEnergy] = useState(() => JSON.parse(localStorage.getItem("energy")) || defaultStats.energy);
+  const [mood, setMood] = useState(() => JSON.parse(localStorage.getItem("mood")) || defaultStats.mood);
+  const [petEmotion, setPetEmotion] = useState("default");
+  const [petName, setPetName] = useState(() => localStorage.getItem("petName") || "Мой кот");
 
-  const [cleanliness, setCleanliness] = useState(() => {
-    const savedCleanliness = localStorage.getItem("cleanliness");
-    return savedCleanliness ? JSON.parse(savedCleanliness) : defaultStats.cleanliness;
-  });
-
-  const [energy, setEnergy] = useState(() => {
-    const savedEnergy = localStorage.getItem("energy");
-    return savedEnergy ? JSON.parse(savedEnergy) : defaultStats.energy;
-  });
-
-  const [mood, setMood] = useState(() => {
-    const savedMood = localStorage.getItem("mood");
-    return savedMood ? JSON.parse(savedMood) : defaultStats.mood;
-  });
-
-  // Сохранение данных в localStorage при изменении статусов
   useEffect(() => {
     localStorage.setItem("hunger", JSON.stringify(hunger));
     localStorage.setItem("cleanliness", JSON.stringify(cleanliness));
     localStorage.setItem("energy", JSON.stringify(energy));
     localStorage.setItem("mood", JSON.stringify(mood));
-  }, [hunger, cleanliness, energy, mood]);
+    localStorage.setItem("petName", petName);
+  }, [hunger, cleanliness, energy, mood, petName]);
 
-  // Таймер для обновления статусов питомца
   useEffect(() => {
     const interval = setInterval(() => {
       setHunger((prev) => Math.max(prev - 5, 0));
       setCleanliness((prev) => Math.max(prev - 3, 0));
       setEnergy((prev) => Math.max(prev - 4, 0));
       setMood((prev) => Math.max(prev - 3, 0));
-    }, 5000); // Каждый 5 секунд
+      setPetEmotion("default");
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="app-container">
-      {/* Компонент для редактирования имени питомца */}
-      <PetName />
-
-      {/* Статус-бары */}
+      <PetName petName={petName} setPetName={setPetName} />
       <div className="status-container">
         <StatusBar label="Голод" value={hunger} />
         <StatusBar label="Чистота" value={cleanliness} />
         <StatusBar label="Энергия" value={energy} />
         <StatusBar label="Настроение" value={mood} />
       </div>
-
-      {/* Компонент с картинкой питомца */}
-      <Pet />
-
-      {/* Компоненты для управления питомцем */}
-      <Controls
-        setHunger={setHunger}
-        setCleanliness={setCleanliness}
-        setEnergy={setEnergy}
-        setMood={setMood}
-      />
+      <Pet emotion={petEmotion} />
+      <Controls setHunger={setHunger} setCleanliness={setCleanliness} setEnergy={setEnergy} setMood={setMood} setPetEmotion={setPetEmotion} />
     </div>
   );
 };

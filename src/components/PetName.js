@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Edit2 } from "lucide-react"; // Иконка карандаша
+import { Edit2 } from "lucide-react"; 
 import "../styles/PetName.scss";
 
 const PetName = () => {

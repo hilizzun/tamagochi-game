@@ -1,11 +1,25 @@
 import React from "react";
-import "../styles/Pet.scss";
-import catImage from "../assets/cat.png"; // добавь в папку `assets/` своё изображение
+import catDefault from "../assets/cat.png";
+import catLoved from "../assets/loved.png";
+import catWashed from "../assets/washed.png";
+import catSleepy from "../assets/sleepy.png";
 
-const Pet = () => {
+const Pet = ({ emotion }) => {
+  // Объект с картинками для разных состояний
+  const emotions = {
+    default: catDefault,
+    loved: catLoved,
+    washed: catWashed,
+    sleepy: catSleepy,
+  };
+
   return (
     <div className="pet-container">
-      <img src={catImage} alt="Питомец" className="pet-image" />
+      <img
+        src={emotions[emotion] || catDefault} // Показываем соответствующую картинку
+        alt="Pet"
+        className="pet-image" // Классы для стилизации
+      />
     </div>
   );
 };
