@@ -12,3 +12,10 @@
   <li>Добавить стилизацию (SCSS) (8)</li>
   <li>Добавить хранение состояния в LocalStorage (3)</li>
 </ol>
+<h2>Третий спринт:</h2>
+<ol>
+  <li>Настроить сервер FastAPI (2)</li>
+  <li>Подключить PostgreSQL и создать таблицу pets (5)</li>
+  <li>Сделать API: GET /pet/{id}, POST /pet, PUT /pet/{id} (5)</li>
+  <li>Подключить React к API (fetch, axios) (3)</li>
+</ol>
