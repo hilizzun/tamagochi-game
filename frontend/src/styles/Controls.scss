@@ -1,0 +1,30 @@
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  
+    button {
+      background-color: #4caf50;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      flex: 1 1 calc(50% - 10px);
+  
+      &:hover {
+        background-color: #388e3c;
+        transform: scale(1.05);
+      }
+  
+      &:active {
+        background-color: #2e7d32;
+        transform: scale(0.95);
+      }
+    }
+  }
