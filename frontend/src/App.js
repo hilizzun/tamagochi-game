@@ -14,20 +14,19 @@ const App = () => {
 
   const handleUpdate = useCallback((updates) => {
     if (!pet) return;
-
-    // Преобразуем данные в валидные значения перед отправкой
+  
+    // Проверка, что все данные имеют значения
     const updatedPet = { ...pet, ...updates };
     const validData = {
       name: updatedPet.name || "",
-      hunger: typeof updatedPet.hunger === 'number' ? updatedPet.hunger : 100,
-      cleanliness: typeof updatedPet.cleanliness === 'number' ? updatedPet.cleanliness : 100,
-      energy: typeof updatedPet.energy === 'number' ? updatedPet.energy : 100,
-      mood: typeof updatedPet.mood === 'number' ? updatedPet.mood : 100,
+      hunger: updatedPet.hunger >= 0 ? updatedPet.hunger : 0,  // Не даём значению быть отрицательным
+      cleanliness: updatedPet.cleanliness >= 0 ? updatedPet.cleanliness : 0,  // Тоже
+      energy: updatedPet.energy >= 0 ? updatedPet.energy : 0,  // И здесь
+      mood: updatedPet.mood >= 0 ? updatedPet.mood : 0,  // И настроению
     };
-
+  
     console.log("Sending updated pet:", validData);
-
-    // Отправляем обновление
+  
     updatePet(PET_ID, validData)
       .then((updatedPetResponse) => {
         setPet(updatedPetResponse);
@@ -36,6 +35,7 @@ const App = () => {
         console.error("Error updating pet:", error);
       });
   }, [pet]);
+  
 
   useEffect(() => {
     getPet(PET_ID).then(setPet);
@@ -70,12 +70,13 @@ const App = () => {
       </div>
       <Pet emotion={petEmotion} />
       <Controls
-        setHunger={(val) => handleUpdate({ hunger: val })}
-        setCleanliness={(val) => handleUpdate({ cleanliness: val })}
-        setEnergy={(val) => handleUpdate({ energy: val })}
-        setMood={(val) => handleUpdate({ mood: val })}
-        setPetEmotion={setPetEmotion}
-      />
+  setHunger={() => handleUpdate({ hunger: pet.hunger + 5 })}
+  setCleanliness={() => handleUpdate({ cleanliness: pet.cleanliness + 3 })}
+  setEnergy={() => handleUpdate({ energy: pet.energy + 4 })}
+  setMood={() => handleUpdate({ mood: pet.mood + 3 })}
+  setPetEmotion={setPetEmotion}
+/>
+
     </div>
   );
 };
