@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000"; // Адрес сервера FastAPI
+const API_URL = "http://127.0.0.1:8000";
 
 export const createPet = async (name) => {
   const response = await axios.post(`${API_URL}/pet`, { name });
@@ -13,10 +13,21 @@ export const getPet = async (id) => {
 };
 
 export const updatePet = async (id, updates) => {
-  const response = await axios.put(`${API_URL}/pet/${id}`, updates, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.data;
+  console.log("Updating pet with data:", updates);  // Логирование данных перед отправкой
+
+  try {
+    const response = await axios.put(`${API_URL}/pet/${id}`, updates, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from server:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating pet:", error.response ? error.response.data : error);
+    throw error;  // Пробрасываем ошибку дальше
+  }
 };
+
+

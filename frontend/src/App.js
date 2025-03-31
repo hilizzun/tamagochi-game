@@ -3,10 +3,10 @@ import PetName from "./components/PetName";
 import Pet from "./components/Pet";
 import StatusBar from "./components/StatusBar";
 import Controls from "./components/Controls";
-import { getPet, updatePet } from "./api"; 
+import { getPet, updatePet } from "./api";
 import "./styles/App.scss";
 
-const PET_ID = 1;
+const PET_ID = 4;
 
 const App = () => {
   const [pet, setPet] = useState(null);
@@ -14,10 +14,28 @@ const App = () => {
 
   const handleUpdate = useCallback((updates) => {
     if (!pet) return;
-    const updatedPet = { ...pet, ...updates };
-    updatePet(PET_ID, updatedPet).then(setPet);
-  }, [pet]);
 
+    // Преобразуем данные в валидные значения перед отправкой
+    const updatedPet = { ...pet, ...updates };
+    const validData = {
+      name: updatedPet.name || "",
+      hunger: typeof updatedPet.hunger === 'number' ? updatedPet.hunger : 100,
+      cleanliness: typeof updatedPet.cleanliness === 'number' ? updatedPet.cleanliness : 100,
+      energy: typeof updatedPet.energy === 'number' ? updatedPet.energy : 100,
+      mood: typeof updatedPet.mood === 'number' ? updatedPet.mood : 100,
+    };
+
+    console.log("Sending updated pet:", validData);
+
+    // Отправляем обновление
+    updatePet(PET_ID, validData)
+      .then((updatedPetResponse) => {
+        setPet(updatedPetResponse);
+      })
+      .catch((error) => {
+        console.error("Error updating pet:", error);
+      });
+  }, [pet]);
 
   useEffect(() => {
     getPet(PET_ID).then(setPet);

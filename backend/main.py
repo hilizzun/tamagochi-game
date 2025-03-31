@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,10 +23,12 @@ def get_db():
         yield db
     finally:
         db.close()
+class PetCreate(BaseModel):
+    name: str
 
 @app.post("/pet")
-def create_pet(name: str, db: Session = Depends(get_db)):
-    pet = Pet(name=name)
+def create_pet(pet_data: PetCreate, db: Session = Depends(get_db)):
+    pet = Pet(name=pet_data.name)
     db.add(pet)
     db.commit()
     db.refresh(pet)
@@ -36,21 +38,34 @@ def create_pet(name: str, db: Session = Depends(get_db)):
 def get_pet(id: int, db: Session = Depends(get_db)):
     return db.query(Pet).filter(Pet.id == id).first()
 
-class PetUpdate(BaseModel):
+class PetUpdateRequest(BaseModel):
+    name: str
     hunger: int
     cleanliness: int
     energy: int
     mood: int
 
 @app.put("/pet/{id}")
-def update_pet(id: int, pet_data: PetUpdate, db: Session = Depends(get_db)):
-    pet = db.query(Pet).filter(Pet.id == id).first()
-    if pet:
-        pet.hunger = pet_data.hunger
-        pet.cleanliness = pet_data.cleanliness
-        pet.energy = pet_data.energy
-        pet.mood = pet_data.mood
-        db.commit()
-        return pet
-    return {"error": "Pet not found"}
+def update_pet(id: int, pet: PetUpdateRequest, db: Session = Depends(get_db)):
+    print(f"Updating pet with ID {id}:", pet.dict())  # Логируем перед обновлением
+
+    db_pet = db.query(Pet).filter(Pet.id == id).first()
+    if not db_pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
+    # Обновление полей
+    db_pet.name = pet.name
+    db_pet.hunger = pet.hunger
+    db_pet.cleanliness = pet.cleanliness
+    db_pet.energy = pet.energy
+    db_pet.mood = pet.mood
+
+    db.commit()
+    db.refresh(db_pet)
+
+    return db_pet
+
+@app.get("/")
+def root():
+    return {"message": "API is running!"}
 
