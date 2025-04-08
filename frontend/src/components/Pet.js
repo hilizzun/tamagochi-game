@@ -3,6 +3,7 @@ import catDefault from "../assets/cat.png";
 import catLoved from "../assets/loved.png";
 import catWashed from "../assets/washed.png";
 import catSleepy from "../assets/sleepy.png";
+import catSad from "../assets/sad.png";
 
 const Pet = ({ emotion }) => {
   // Объект с картинками для разных состояний
@@ -11,6 +12,7 @@ const Pet = ({ emotion }) => {
     loved: catLoved,
     washed: catWashed,
     sleepy: catSleepy,
+    sad: catSad,  // Путь к изображению питомца, когда ему плохо
   };
 
   return (
@@ -23,5 +25,4 @@ const Pet = ({ emotion }) => {
     </div>
   );
 };
-
 export default Pet;

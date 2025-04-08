@@ -1,11 +1,13 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal
 from models import Base, Pet
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from background_tasks import start_scheduler
 
 app = FastAPI()
+start_scheduler()
 
 app.add_middleware(
     CORSMiddleware,

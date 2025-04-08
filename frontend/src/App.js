@@ -12,33 +12,49 @@ const App = () => {
   const [pet, setPet] = useState(null);
   const [petEmotion, setPetEmotion] = useState("default");
 
+  const isPetOkay = pet => {
+    // Определяем, что питомцу плохо, если хотя бы одно состояние ниже 30
+    return (pet.hunger + pet.cleanliness + pet.energy + pet.mood)>100;
+  };
+
   const handleUpdate = useCallback((updates) => {
     if (!pet) return;
-  
+
     // Проверка, что все данные имеют значения
     const updatedPet = { ...pet, ...updates };
     const validData = {
       name: updatedPet.name || "",
-      hunger: updatedPet.hunger >= 0 ? updatedPet.hunger : 0,  // Не даём значению быть отрицательным
-      cleanliness: updatedPet.cleanliness >= 0 ? updatedPet.cleanliness : 0,  // Тоже
-      energy: updatedPet.energy >= 0 ? updatedPet.energy : 0,  // И здесь
-      mood: updatedPet.mood >= 0 ? updatedPet.mood : 0,  // И настроению
+      hunger: updatedPet.hunger >= 0 ? updatedPet.hunger : 0,
+      cleanliness: updatedPet.cleanliness >= 0 ? updatedPet.cleanliness : 0,
+      energy: updatedPet.energy >= 0 ? updatedPet.energy : 0,
+      mood: updatedPet.mood >= 0 ? updatedPet.mood : 0,
     };
-  
-    console.log("Sending updated pet:", validData);
-  
+
     updatePet(PET_ID, validData)
       .then((updatedPetResponse) => {
         setPet(updatedPetResponse);
+        // Устанавливаем эмоцию в зависимости от состояния питомца
+        if (isPetOkay(updatedPetResponse)) {
+          setPetEmotion("default");  // Хорошо
+        } else {
+          setPetEmotion("sad");  // Плохо
+        }
       })
       .catch((error) => {
         console.error("Error updating pet:", error);
       });
   }, [pet]);
-  
 
   useEffect(() => {
-    getPet(PET_ID).then(setPet);
+    getPet(PET_ID).then((fetchedPet) => {
+      setPet(fetchedPet);
+      // При загрузке определяем, как питомец себя чувствует
+      if (isPetOkay(fetchedPet)) {
+        setPetEmotion("default");
+      } else {
+        setPetEmotion("sad");
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -70,15 +86,15 @@ const App = () => {
       </div>
       <Pet emotion={petEmotion} />
       <Controls
-  setHunger={() => handleUpdate({ hunger: pet.hunger + 5 })}
-  setCleanliness={() => handleUpdate({ cleanliness: pet.cleanliness + 3 })}
-  setEnergy={() => handleUpdate({ energy: pet.energy + 4 })}
-  setMood={() => handleUpdate({ mood: pet.mood + 3 })}
-  setPetEmotion={setPetEmotion}
-/>
-
+        setHunger={() => handleUpdate({ hunger: pet.hunger + 5 })}
+        setCleanliness={() => handleUpdate({ cleanliness: pet.cleanliness + 3 })}
+        setEnergy={() => handleUpdate({ energy: pet.energy + 4 })}
+        setMood={() => handleUpdate({ mood: pet.mood + 3 })}
+        setPetEmotion={setPetEmotion}
+      />
     </div>
   );
 };
+
 
 export default App;
