@@ -14,36 +14,39 @@ const App = () => {
 
   const isPetOkay = pet => {
     // Определяем, что питомцу плохо, если хотя бы одно состояние ниже 30
-    return (pet.hunger + pet.cleanliness + pet.energy + pet.mood)>100;
+    return (pet.hunger + pet.cleanliness + pet.energy + pet.mood) > 0;
   };
 
   const handleUpdate = useCallback((updates) => {
     if (!pet) return;
-
-    // Проверка, что все данные имеют значения
+  
     const updatedPet = { ...pet, ...updates };
     const validData = {
       name: updatedPet.name || "",
-      hunger: updatedPet.hunger >= 0 ? updatedPet.hunger : 0,
-      cleanliness: updatedPet.cleanliness >= 0 ? updatedPet.cleanliness : 0,
-      energy: updatedPet.energy >= 0 ? updatedPet.energy : 0,
-      mood: updatedPet.mood >= 0 ? updatedPet.mood : 0,
+      hunger: Math.max(updatedPet.hunger, 0),
+      cleanliness: Math.max(updatedPet.cleanliness, 0),
+      energy: Math.max(updatedPet.energy, 0),
+      mood: Math.max(updatedPet.mood, 0),
     };
-
+  
     updatePet(PET_ID, validData)
       .then((updatedPetResponse) => {
         setPet(updatedPetResponse);
-        // Устанавливаем эмоцию в зависимости от состояния питомца
-        if (isPetOkay(updatedPetResponse)) {
-          setPetEmotion("default");  // Хорошо
-        } else {
-          setPetEmotion("sad");  // Плохо
-        }
+  
+        // Добавление задержки для смены эмоции
+        setTimeout(() => {
+          // Устанавливаем эмоцию в зависимости от состояния питомца
+          if (isPetOkay(updatedPetResponse)) {
+            setPetEmotion("default"); // Хорошо
+          } else {
+            setPetEmotion("sad"); // Плохо
+          }
+        }, 1000); // Задержка 1 секунда
       })
       .catch((error) => {
         console.error("Error updating pet:", error);
       });
-  }, [pet]);
+  }, [pet]);  
 
   useEffect(() => {
     getPet(PET_ID).then((fetchedPet) => {

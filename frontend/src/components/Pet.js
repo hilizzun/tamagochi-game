@@ -25,4 +25,5 @@ const Pet = ({ emotion }) => {
     </div>
   );
 };
+
 export default Pet;
