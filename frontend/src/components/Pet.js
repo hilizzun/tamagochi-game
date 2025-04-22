@@ -6,21 +6,20 @@ import catSleepy from "../assets/sleepy.png";
 import catSad from "../assets/sad.png";
 
 const Pet = ({ emotion }) => {
-  // Объект с картинками для разных состояний
   const emotions = {
     default: catDefault,
     loved: catLoved,
     washed: catWashed,
     sleepy: catSleepy,
-    sad: catSad,  // Путь к изображению питомца, когда ему плохо
+    sad: catSad, 
   };
 
   return (
     <div className="pet-container">
       <img
-        src={emotions[emotion] || catDefault} // Показываем соответствующую картинку
+        src={emotions[emotion] || catDefault}
         alt="Pet"
-        className="pet-image" // Классы для стилизации
+        className="pet-image" 
       />
     </div>
   );

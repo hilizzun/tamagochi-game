@@ -46,6 +46,7 @@ class PetUpdateRequest(BaseModel):
     cleanliness: int
     energy: int
     mood: int
+    is_sleeping: bool
 
 @app.put("/pet/{id}")
 def update_pet(id: int, pet: PetUpdateRequest, db: Session = Depends(get_db)):
@@ -61,6 +62,7 @@ def update_pet(id: int, pet: PetUpdateRequest, db: Session = Depends(get_db)):
     db_pet.cleanliness = pet.cleanliness
     db_pet.energy = pet.energy
     db_pet.mood = pet.mood
+    db_pet.is_sleeping = pet.is_sleeping
 
     db.commit()
     db.refresh(db_pet)

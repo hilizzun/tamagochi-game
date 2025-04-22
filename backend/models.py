@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from database import Base
 
 class Pet(Base):
@@ -10,3 +10,4 @@ class Pet(Base):
     cleanliness = Column(Integer, default=100)
     energy = Column(Integer, default=100)
     mood = Column(Integer, default=100)
+    is_sleeping = Column(Boolean, default=False)

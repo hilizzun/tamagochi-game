@@ -13,7 +13,7 @@ export const getPet = async (id) => {
 };
 
 export const updatePet = async (id, updates) => {
-  console.log("Updating pet with data:", updates);  // Логирование данных перед отправкой
+  console.log("Updating pet with data:", updates); 
 
   try {
     const response = await axios.put(`${API_URL}/pet/${id}`, updates, {
@@ -26,7 +26,7 @@ export const updatePet = async (id, updates) => {
     return response.data;
   } catch (error) {
     console.error("Error updating pet:", error.response ? error.response.data : error);
-    throw error;  // Пробрасываем ошибку дальше
+    throw error;  
   }
 };
 

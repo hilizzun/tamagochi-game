@@ -1,7 +1,16 @@
 import React from "react";
 import "../styles/Controls.scss";
 
-const Controls = ({ setHunger, setCleanliness, setEnergy, setMood, setPetEmotion }) => {
+const Controls = ({
+  setHunger,
+  setCleanliness,
+  setEnergy,
+  setMood,
+  setPetEmotion,
+  toggleClothing,
+  toggleSleep,
+  isSleeping,
+}) => {
   return (
     <div className="controls">
       <button onClick={() => {
@@ -12,7 +21,7 @@ const Controls = ({ setHunger, setCleanliness, setEnergy, setMood, setPetEmotion
       </button>
       <button onClick={() => {
         setCleanliness((prev) => Math.min(prev + 20, 100));
-        setPetEmotion("washed"); 
+        setPetEmotion("washed");
       }}>
         Помыть
       </button>
@@ -20,7 +29,7 @@ const Controls = ({ setHunger, setCleanliness, setEnergy, setMood, setPetEmotion
         setEnergy((prev) => Math.min(prev + 20, 100));
         setPetEmotion("sleepy");
       }}>
-        Уложить спать
+        Подзарядить
       </button>
       <button onClick={() => {
         setMood((prev) => Math.min(prev + 20, 100));
@@ -28,8 +37,12 @@ const Controls = ({ setHunger, setCleanliness, setEnergy, setMood, setPetEmotion
       }}>
         Поиграть
       </button>
+      <button onClick={toggleSleep}>
+        {isSleeping ? "Разбудить" : "Уложить спать"}
+      </button>
     </div>
   );
 };
+
 
 export default Controls;
