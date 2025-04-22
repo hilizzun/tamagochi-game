@@ -24,6 +24,17 @@ const App = () => {
 
   const petRef = useRef(pet);
 
+  const clothesOptions = ["shirt", null];
+  const [clothesIndex, setClothesIndex] = useState(0);
+  const [clothes, setClothes] = useState(clothesOptions[clothesIndex]);
+
+  const changeClothes = () => {
+    const newIndex = (clothesIndex + 1) % clothesOptions.length;
+    setClothesIndex(newIndex);
+    setClothes(clothesOptions[newIndex]);
+  };
+
+
   const handleUpdate = useCallback(
     (updates) => {
       if (!pet) return;
@@ -126,7 +137,7 @@ const App = () => {
         <StatusBar label="Энергия" value={pet.energy} />
         <StatusBar label="Настроение" value={pet.mood} />
       </div>
-      <Pet emotion={petEmotion} />
+      <Pet emotion={petEmotion} clothes={clothes} />
 
       <Controls
         setHunger={() => handleUpdate({ hunger: pet.hunger + 5 })}
@@ -134,6 +145,7 @@ const App = () => {
         setEnergy={() => handleUpdate({ energy: pet.energy + 4 })}
         setMood={() => handleUpdate({ mood: pet.mood + 3 })}
         setPetEmotion={setPetEmotion}
+        changeClothes={changeClothes}
         toggleSleep={() => {
           const newSleepingState = !isSleeping;
           handleUpdate({ is_sleeping: newSleepingState });

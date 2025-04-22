@@ -7,7 +7,7 @@ const Controls = ({
   setEnergy,
   setMood,
   setPetEmotion,
-  toggleClothing,
+  changeClothes,
   toggleSleep,
   isSleeping,
 }) => {
@@ -40,6 +40,7 @@ const Controls = ({
       <button onClick={toggleSleep}>
         {isSleeping ? "Разбудить" : "Уложить спать"}
       </button>
+      <button onClick={changeClothes}>Сменить одежду</button>
     </div>
   );
 };
