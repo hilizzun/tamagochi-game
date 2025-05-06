@@ -3,7 +3,7 @@ import PetName from "./components/PetName";
 import Pet from "./components/Pet";
 import StatusBar from "./components/StatusBar";
 import Controls from "./components/Controls";
-import { getPet, updatePet } from "./api";
+import { getPet, updatePet, createPet } from "./api";
 import "./styles/App.scss";
 
 const PET_ID = 1;
