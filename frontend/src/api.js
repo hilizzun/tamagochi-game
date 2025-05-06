@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://tamagotchi-ibkj.onrender.com";
+const API_URL = "http://127.0.0.1:8000";
 
 export const createPet = async (name) => {
   const response = await axios.post(`${API_URL}/pet`, { name });
