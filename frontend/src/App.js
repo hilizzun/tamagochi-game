@@ -6,7 +6,7 @@ import Controls from "./components/Controls";
 import { getPet, updatePet } from "./api";
 import "./styles/App.scss";
 
-const PET_ID = 4;
+const PET_ID = 1;
 
 const App = () => {
   const [pet, setPet] = useState(null);
@@ -74,6 +74,11 @@ const App = () => {
     },
     [pet]
   );
+
+  useEffect(() => {
+    // Создаём питомца с ID=1 (если его ещё нет)
+    createPet("Мурзик").then(console.log).catch(console.error);
+  }, []);
 
   useEffect(() => {
     getPet(PET_ID).then((fetchedPet) => {
