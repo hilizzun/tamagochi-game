@@ -3,10 +3,8 @@ import PetName from "./components/PetName";
 import Pet from "./components/Pet";
 import StatusBar from "./components/StatusBar";
 import Controls from "./components/Controls";
-import { getPet, updatePet } from "./api";
+import { getPet, updatePet, createPet } from "./api"; // добавляем createPet
 import "./styles/App.scss";
-
-const PET_ID = 4;
 
 const App = () => {
   const [pet, setPet] = useState(null);
@@ -24,7 +22,7 @@ const App = () => {
 
   const petRef = useRef(pet);
 
-  const clothesOptions = ["shirt", "dress", "rubashka",null];
+  const clothesOptions = ["shirt", "dress", "rubashka", null];
   const [clothesIndex, setClothesIndex] = useState(0);
   const [clothes, setClothes] = useState(clothesOptions[clothesIndex]);
 
@@ -33,7 +31,6 @@ const App = () => {
     setClothesIndex(newIndex);
     setClothes(clothesOptions[newIndex]);
   };
-
 
   const handleUpdate = useCallback(
     (updates) => {
@@ -53,7 +50,7 @@ const App = () => {
             : pet.is_sleeping,
       };
 
-      updatePet(PET_ID, validData)
+      updatePet(pet.id, validData)
         .then((updatedPetResponse) => {
           setPet(updatedPetResponse);
           setIsSleeping(updatedPetResponse.is_sleeping); // обновим локально
@@ -76,12 +73,38 @@ const App = () => {
   );
 
   useEffect(() => {
-    getPet(PET_ID).then((fetchedPet) => {
-      setPet(fetchedPet);
-      setIsSleeping(fetchedPet.is_sleeping);
-      setPetEmotion(isPetOkay(fetchedPet) ? "default" : "sad");
-    });
-  }, []);
+    // Получение device_id из localStorage или его генерация, если его нет
+    const deviceId = localStorage.getItem("device_id") || generateDeviceId();
+
+    // Сохранение device_id в localStorage, если его нет
+    if (!localStorage.getItem("device_id")) {
+      localStorage.setItem("device_id", deviceId);
+    }
+
+    // Запрос питомца с использованием device_id
+    getPet(deviceId)
+      .then((fetchedPet) => {
+        if (fetchedPet) {
+          setPet(fetchedPet);
+          setIsSleeping(fetchedPet.is_sleeping);
+          setPetEmotion(isPetOkay(fetchedPet) ? "default" : "sad");
+        } else {
+          // Если питомец не найден, создаем нового
+          createPet(deviceId) // передаем deviceId
+            .then((newPet) => {
+              setPet(newPet);
+              setIsSleeping(newPet.is_sleeping);
+              setPetEmotion(isPetOkay(newPet) ? "default" : "sad");
+            })
+            .catch((error) => {
+              console.error("Error creating new pet:", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching pet:", error);
+      });
+  }, []); // добавляем зависимость на deviceId
 
   useEffect(() => {
     petRef.current = pet;
@@ -161,6 +184,10 @@ const App = () => {
       />
     </div>
   );
+};
+
+const generateDeviceId = () => {
+  return Math.random().toString(36).substr(2, 9); // Генерация случайного устройства ID
 };
 
 export default App;

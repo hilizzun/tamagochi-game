@@ -8,11 +8,12 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-scripts": "^3.4.4",
+    "lucide-react": "^0.507.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sass": "^1.86.0",
     "sass-loader": "^16.0.5",
+    "serve": "^14.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -40,6 +41,6 @@
     ]
   },
   "devDependencies": {
-    "webpack": "^4.42.0"
+    "react-scripts": "^5.0.1"
   }
 }
