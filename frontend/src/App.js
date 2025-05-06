@@ -24,7 +24,7 @@ const App = () => {
 
   const petRef = useRef(pet);
 
-  const clothesOptions = ["shirt", null];
+  const clothesOptions = ["shirt", "dress", "rubashka",null];
   const [clothesIndex, setClothesIndex] = useState(0);
   const [clothes, setClothes] = useState(clothesOptions[clothesIndex]);
 
