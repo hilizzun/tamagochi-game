@@ -5,6 +5,8 @@ import catWashed from "../assets/washed.png";
 import catSleepy from "../assets/sleepy.png";
 import catSad from "../assets/sad.png";
 import shirt from "../assets/futbolka.png";
+import plate from "../assets/plate.png";
+import rubashka from "../assets/rubashka.png";
 
 const Pet = ({ emotion, clothes }) => {
   const emotions = {
@@ -17,6 +19,8 @@ const Pet = ({ emotion, clothes }) => {
 
   const clothesImages = {
     shirt: shirt,
+    plate: plate,
+    rubashka: rubashka,
   };
 
   return (
