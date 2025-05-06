@@ -76,17 +76,24 @@ const App = () => {
   );
 
   useEffect(() => {
-    // Создаём питомца с ID=1 (если его ещё нет)
-    createPet("Мурзик").then(console.log).catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    getPet(PET_ID).then((fetchedPet) => {
-      setPet(fetchedPet);
-      setIsSleeping(fetchedPet.is_sleeping);
-      setPetEmotion(isPetOkay(fetchedPet) ? "default" : "sad");
-    });
-  }, []);
+    getPet(PET_ID)
+      .then((fetchedPet) => {
+        if (fetchedPet) {
+          setPet(fetchedPet);
+          setIsSleeping(fetchedPet.is_sleeping);
+          setPetEmotion(isPetOkay(fetchedPet) ? "default" : "sad");
+        } else {
+          createPet("Мурзик")
+            .then((newPet) => {
+              setPet(newPet);
+              setIsSleeping(newPet.is_sleeping);
+              setPetEmotion(isPetOkay(newPet) ? "default" : "sad");
+            })
+            .catch(console.error);
+        }
+      })
+      .catch(console.error);
+  }, []);  
 
   useEffect(() => {
     petRef.current = pet;
