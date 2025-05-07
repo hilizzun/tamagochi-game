@@ -20,3 +20,10 @@
   <li>Сделать API: GET /pet/{id}, POST /pet, PUT /pet/{id} (5)</li>
   <li>Подключить React к API (fetch, axios) (3)</li>
 </ol>
+....
+<h2>Седьмой спринт:</h2>
+<ol>
+  <li>Офрмить бота в ТГ (3)</li>
+  <li>Протестировать на IOS, Andriod (5)</li>
+  <li>Исправить выявленные баги (5)</li>
+</ol>
