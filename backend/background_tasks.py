@@ -8,9 +8,10 @@ def update_pet_states():
     try:
         pets = db.query(Pet).all()
         for pet in pets:
-            pet.hunger = max(pet.hunger - 5, 0)
-            pet.cleanliness = max(pet.cleanliness - 3, 0)
-            pet.energy = max(pet.energy - 4, 0)
+            pet.hunger = max(pet.hunger - 3, 0)
+            pet.mood = max(pet.mood - 2, 0)
+            pet.cleanliness = max(pet.cleanliness - 2, 0)
+            pet.energy = max(pet.energy - 2, 0)
             db.add(pet)
         db.commit()
         print("Фоновое обновление прошло успешно.")

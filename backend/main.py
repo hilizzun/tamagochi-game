@@ -30,7 +30,19 @@ class PetCreate(BaseModel):
 
 @app.post("/pet")
 def create_pet(pet_data: PetCreate, db: Session = Depends(get_db)):
-    pet = Pet(name=pet_data.name)
+    existing_pet = db.query(Pet).filter(Pet.id == 1).first()
+    if existing_pet:
+        return existing_pet  
+
+    pet = Pet(
+        id=1,
+        name=pet_data.name,
+        hunger=100,
+        cleanliness=100,
+        energy=100,
+        mood=100,
+        is_sleeping=False,
+    )
     db.add(pet)
     db.commit()
     db.refresh(pet)

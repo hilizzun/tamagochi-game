@@ -76,6 +76,14 @@ const App = () => {
   );
 
   useEffect(() => {
+    if (window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand(); // можно не обязательно
+      console.log("Telegram WebApp инициализирован");
+    }
+  }, []);
+  
+  useEffect(() => {
     getPet(PET_ID)
       .then((fetchedPet) => {
         if (fetchedPet) {
@@ -134,6 +142,28 @@ const App = () => {
 
     return () => clearInterval(interval);
   }, [handleUpdate, isSleeping, petEmotion]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPet(PET_ID)
+        .then((fetchedPet) => {
+          if (fetchedPet) {
+            setPet((prevPet) => {
+              // Обновлять только если данные действительно поменялись
+              if (JSON.stringify(prevPet) !== JSON.stringify(fetchedPet)) {
+                setIsSleeping(fetchedPet.is_sleeping);
+                setPetEmotion(isPetOkay(fetchedPet) ? "default" : "sad");
+                return fetchedPet;
+              }
+              return prevPet;
+            });
+          }
+        })
+        .catch(console.error);
+    }, 1000); // Раз в секунду
+  
+    return () => clearInterval(interval);
+  }, []);  
 
   if (!pet) return <div>Загрузка...</div>;
 

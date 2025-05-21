@@ -2,20 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Edit2 } from "lucide-react"; 
 import "../styles/PetName.scss";
 
-const PetName = () => {
-  const [name, setName] = useState("Мой питомец");
+const PetName = ({ petName, setPetName }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [localName, setLocalName] = useState(petName);
 
   useEffect(() => {
-    const savedName = localStorage.getItem("petName");
-    if (savedName) {
-      setName(savedName);
-    }
-  }, []);
+    setLocalName(petName);
+  }, [petName]);
 
   const handleSave = () => {
     setIsEditing(false);
-    localStorage.setItem("petName", name);
+    setPetName(localName); // обновим имя в App (и на бэке)
   };
 
   return (
@@ -23,14 +20,14 @@ const PetName = () => {
       {isEditing ? (
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={localName}
+          onChange={(e) => setLocalName(e.target.value)}
           onBlur={handleSave}
           autoFocus
         />
       ) : (
         <h2>
-          {name}{" "}
+          {petName}{" "}
           <Edit2
             className="edit-icon"
             size={20}
